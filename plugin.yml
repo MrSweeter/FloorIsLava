@@ -3,7 +3,6 @@ main: com.mrsweeter.theFloorIsLava.TheFloorIsLava
 version: 1.0
 author: MrSweeter
 description: Mini game
-depend: [DreamAPI]
 
 commands:
   flleave:
