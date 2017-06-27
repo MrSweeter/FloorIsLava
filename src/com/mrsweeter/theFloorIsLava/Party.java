@@ -397,7 +397,7 @@ public class Party {
 			msg += "Personne ne ";
 		}
 		msg += "gagne la partie";
-		this.sendUfo(msg, true, Sound.BLOCK_NOTE_XYLOPHONE);
+		this.sendUfo(msg, true, Sound.BLOCK_NOTE_PLING);
 		this.isStarted = false;
 		this.reset();
 	}

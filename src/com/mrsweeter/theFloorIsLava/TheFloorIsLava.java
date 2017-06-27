@@ -73,7 +73,7 @@ public class TheFloorIsLava extends JavaPlugin	{
 			}
 		}
 		
-		log.info(ConsoleColor.GREEN + "=============== " + ConsoleColor.YELLOW + "FloorIsLava enable" + ConsoleColor.GREEN + " ===============" + ConsoleColor.RESET);
+		log.info(ConsoleColor.GREEN + "=============== " + ConsoleColor.YELLOW + "FloorIsLava disable" + ConsoleColor.GREEN + " ===============" + ConsoleColor.RESET);
 	}
 	
 	public ConfigurationCollection getConfigurations()	{
