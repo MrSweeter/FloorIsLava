@@ -1,0 +1,16 @@
+name: TheFloorIsLava
+main: com.mrsweeter.theFloorIsLava.TheFloorIsLava
+version: 1.0
+author: MrSweeter
+description: Mini game
+depend: [DreamAPI]
+
+commands:
+  flleave:
+    description: Start party
+    usage: §c/flleave
+    permission: floorlava.leave
+  flreload:
+    description: Start party
+    usage: §c/flreload
+    permission: floorlava.reload

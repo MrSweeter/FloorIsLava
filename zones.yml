@@ -1,0 +1,42 @@
+modern:
+  name: Modern house
+  world: sweetdream
+  game-manager:
+    x: 6.5
+    y: 15.25
+    z: 23.5
+    yaw: 0
+    pitch: 0
+  teleport-to-manager:
+    x: 6.5
+    y: 15.25
+    z: 26.5
+    yaw: 180
+    pitch: 0
+  teleport-to-arena:
+    x: -2.5
+    y: 10.25
+    z: 26.5
+    yaw: 0
+    pitch: 0
+  corner-1:
+    x: -9
+    y: 27
+    z: -9
+  corner-2:
+    x: 25
+    y: 0
+    z: 31
+  floor:
+  - STAINED_CLAY:5
+  - GRASS
+  - STONE
+  - DOUBLE_STONE_SLAB2
+  - WOOD_STEP:1
+  - WOOD_STEP:9
+  - SNOW_BLOCK
+  - WOOD
+  - WATER
+  - STATIONARY_WATER
+  - COBBLE
+gliby_: 0
