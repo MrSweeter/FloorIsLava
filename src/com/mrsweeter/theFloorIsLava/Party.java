@@ -187,7 +187,7 @@ public class Party {
 			
 			if (playerAntiAFK.get(uuid) != null && playerAntiAFK.get(uuid).isSame(triple))	{
 				p.damage(10);
-				p.sendMessage("§cVous devez vous déplacer entre chaque coulée !");
+				p.sendMessage("Â§cVous devez vous dÃ©placer entre chaque coulÃ©e !");
 			}
 			else {playerAntiAFK.put(uuid, triple);}
 			
@@ -196,7 +196,7 @@ public class Party {
 	
 	public int start(){
 		if(this.isStarted){
-			return 4; //La partie est déjà lancée
+			return 4; //La partie est dÃ©jÃ  lancÃ©e
 		}
 		
 		if(this.playerParty.size() < 2){
@@ -211,7 +211,11 @@ public class Party {
 	private void EnableEvent() {
 		
 		this.spawnPlayer();
-		this.sendUfo("§620 secondes avant la première coulée !", true, null);
+		this.sendUfo("Â§620 secondes avant la premiÃ¨re coulÃ©e !", true, false, null);
+		
+		BukkitRunnable timer = new McTimerTask(20, this);
+		timer.runTaskTimer(TheFloorIsLava.instance, 0, 20);
+		
 		this.isEnable = false;
 		task = new BukkitRunnable() {
 			
@@ -227,6 +231,8 @@ public class Party {
 		for(Player p: this.playerParty.values()){
 			p.teleport(this.arena);
 			p.setGameMode(GameMode.ADVENTURE);
+			p.setFoodLevel(20);
+			p.setHealth(20);
 			p.setFlying(false);
 			for(PotionEffect pe: p.getActivePotionEffects()){
 				p.removePotionEffect(pe.getType());
@@ -290,7 +296,11 @@ public class Party {
 		int time = 20 - 2*round;
 		if (time < 3)	{time = 3;}
 		
-		this.sendUfo("§6" + time + " secondes avant la prochaine coulée !", true, null);
+		this.sendUfo("Â§6" + time + " secondes avant la prochaine coulÃ©e !", true, false, null);
+		
+		BukkitRunnable timer = new McTimerTask(time, this);
+		timer.runTaskTimer(TheFloorIsLava.instance, 0, 20);
+		
 		disableLava();
 		this.isEnable = false;
 		
@@ -322,18 +332,18 @@ public class Party {
 	public int addPlayer(Player p)	{
 		
 		if(this.isStarted){
-			return 6; //party déja commencée
+			return 6; //party dÃ©ja commencÃ©e
 		}
 		
 		UUID eId = p.getUniqueId();
 		
 		Party party = players.get(eId);
 		if(party != null){
-			return 2; // code 2 => déja dans une partie
+			return 2; // code 2 => dÃ©ja dans une partie
 		}
 		
 		if (playerParty.size() == 0)	{
-			Bukkit.broadcastMessage("§6" + p.getName() + "§e vous attends au §a/warp tfil §e!");
+			Bukkit.broadcastMessage("Â§6" + p.getName() + "Â§e vous attends au Â§a/warp tfil Â§e!");
 		}
 		players.put(eId, this);
 		this.playerParty.put(eId, p);
@@ -355,17 +365,17 @@ public class Party {
 	
 	public boolean setReady(Player p){
 		if (this.playerReady.get(p.getUniqueId()) == null)	{
-			p.sendMessage("§cCe n'est pas votre partie !");
+			p.sendMessage("Â§cCe n'est pas votre partie !");
 			p.closeInventory();
 			return false;
 		}
 		if(this.playerReady.get(p.getUniqueId()))	{
-			p.sendMessage("§cVous êtes déjà prêt !");
+			p.sendMessage("Â§cVous Ãªtes dÃ©jÃ  prÃªt !");
 			p.closeInventory();
 			return false;
 		}
 		this.playerReady.put(p.getUniqueId(), true);
-		this.sendUfo("§eLe joueur "+p.getName()+" est prêt !", true, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+		this.sendUfo("Â§eLe joueur "+p.getName()+" est prÃªt !", true, true, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
 		p.closeInventory();
 		if(this.canStart()){
 			this.start();
@@ -385,12 +395,18 @@ public class Party {
 		return true;
 	}
 	
-	private void sendUfo(String msg, boolean title, Sound sound) {
+	public void sendUfo(String msg, boolean chat, boolean title, Sound sound) {
 		for(Player p: this.playerParty.values()){
 			
-			p.sendMessage(msg);
-			if(title){
-				p.sendTitle("", msg, 20 , 20, 20);
+			if (chat)	{
+				p.sendMessage(msg);
+				if(title){
+					p.sendTitle("", msg, 20 , 20, 20);
+				}
+			} else {
+				if(title){
+					p.sendTitle("", msg, 0 , 40, 0);
+				}
 			}
 			if(sound != null){
 				p.playSound(p.getLocation(), sound, 10, 1);
@@ -399,7 +415,7 @@ public class Party {
 	}
 
 	private void endParty() {
-		String msg = "§e";
+		String msg = "Â§e";
 		if(this.playerParty.size() == 1){
 			
 			Iterator<Player> it = playerParty.values().iterator();
@@ -412,13 +428,14 @@ public class Party {
 			msg += "Personne ne ";
 		}
 		msg += "gagne la partie";
-		this.sendUfo(msg, true, Sound.BLOCK_NOTE_PLING);
+		this.sendUfo(msg, true, true, Sound.BLOCK_NOTE_PLING);
 		this.reset();
 	}
 
 	public void playerDeath(Player p) {
-		sendUfo("§e" + p.getName() + "§6 s'est noyé dans une coulée de lave !", false, Sound.ENTITY_BLAZE_DEATH);
+		sendUfo("Â§e" + p.getName() + "Â§6 s'est noyÃ© dans une coulÃ©e de lave !", true, false, Sound.ENTITY_BLAZE_DEATH);
 		tpLobby(p);
+		playerParty.remove(p.getUniqueId());
 		endParty();
 	}
 	
@@ -426,22 +443,23 @@ public class Party {
 		if(this.removePlayer(p) == 1){
 			if(this.isStarted){
 				
-				this.sendUfo("§6Le joueur §b"+p.getName()+"§6 a quitté la partie :(", true, null);
+				this.sendUfo("Â§6Le joueur Â§b"+p.getName()+"Â§6 a quittÃ© la partie :(", true, false, null);
 				
 				if(this.playerParty.size() == 1){
-					this.sendUfo("§6Fin de la partie car il n'y a plus assez de joueur :(", true, null);
+					this.sendUfo("Â§6Fin de la partie car il n'y a plus assez de joueur :(", true, true, null);
 					this.reset();
 				}
 				p.teleport(lobby);
 			}
 			this.tpLobby(p);
-			p.sendMessage("§6Vous avez quitter la partie :(");
+			p.sendMessage("Â§6Vous avez quitter la partie :(");
 		}
 		gui.updateGUI(InteractManager.NPC_MENU.get(gui.getUniqueIdNPC()), this);
 	}
 
 	private void tpLobby(Player p) {
 		p.setHealth(20);
+		p.setFoodLevel(20);
 		p.teleport(this.lobby, TeleportCause.PLUGIN);
 		for(PotionEffect pe: p.getActivePotionEffects()){
 			p.removePotionEffect(pe.getType());
