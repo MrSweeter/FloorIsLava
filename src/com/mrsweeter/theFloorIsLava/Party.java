@@ -23,6 +23,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.mrsweeter.theFloorIsLava.Listeners.InteractManager;
+
 import Utils.Triplet;
 
 public class Party {
@@ -126,7 +128,7 @@ public class Party {
 		List<Integer> list;
 		floorNormal.clear();
 		
-		if (!isEnable)	{
+		if (!isEnable && isStarted)	{
 			for (int i = corner1.getBlockX(); i <= corner2.getBlockX(); i++)	{
 				for (int j = corner1.getBlockZ(); j <= corner2.getBlockZ(); j++)	{
 					for (int k = corner1.getBlockY(); k >= corner2.getBlockY(); k--)	{
@@ -164,7 +166,7 @@ public class Party {
 	
 	@SuppressWarnings("deprecation")
 	public void disableLava()	{
-		if (isEnable)	{
+		if (isEnable && isStarted)	{
 			Block current;
 			for (Location b : floorNormal.keySet())	{
 				current = world.getBlockAt(b);
@@ -408,13 +410,11 @@ public class Party {
 		}
 		msg += "gagne la partie";
 		this.sendUfo(msg, true, Sound.BLOCK_NOTE_PLING);
-		this.isStarted = false;
 		this.reset();
 	}
 
 	public void playerDeath(Player p) {
 		sendUfo("§e" + p.getName() + "§6 s'est noyé dans une coulée de lave !", false, Sound.ENTITY_BLAZE_DEATH);
-		removePlayer(p);
 		tpLobby(p);
 		endParty();
 	}
@@ -455,7 +455,10 @@ public class Party {
 			task.cancel();
 		}
 		this.disableLava();
-		this.playerParty = new HashMap<UUID, Player>();
+		this.playerParty = new HashMap<>();
+		this.playerReady = new HashMap<>();
+		this.playerAntiAFK = new HashMap<>();
+		gui.updateGUI(InteractManager.NPC_MENU.get(gui.getUniqueIdNPC()), this);
 		this.isStarted = false;
 	}
 }

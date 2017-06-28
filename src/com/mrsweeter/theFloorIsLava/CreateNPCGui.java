@@ -2,6 +2,7 @@ package com.mrsweeter.theFloorIsLava;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -43,6 +44,10 @@ public class CreateNPCGui {
 	public void killNPC()	{
 		NPC_LIST.remove(this.npc);
 		this.npc.remove();
+	}
+	
+	public UUID getUniqueIdNPC()	{
+		return npc.getUniqueId();
 	}
 
 	private void spawnNPC(Location location) {
