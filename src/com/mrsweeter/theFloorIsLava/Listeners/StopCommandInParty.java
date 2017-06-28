@@ -9,7 +9,7 @@ import com.mrsweeter.theFloorIsLava.Party;
 public class StopCommandInParty implements Listener	{
 	
 	@EventHandler
-	public void onCmd(PlayerCommandPreprocessEvent event){
+	public void onCmd(PlayerCommandPreprocessEvent event)	{
 		
 		Party p = Party.players.get(event.getPlayer().getUniqueId());
 		

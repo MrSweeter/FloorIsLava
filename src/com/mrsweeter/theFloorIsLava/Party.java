@@ -17,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,6 +30,7 @@ public class Party {
 	public static HashMap<String, Party> PARTY_LIST = new HashMap<String, Party>();
 	
 	public static Party createParty(ConfigurationSection config)	{
+		
 		if (config != null)	{
 			World w = Bukkit.getWorld(config.getString("world"));
 			
@@ -68,6 +70,7 @@ public class Party {
 	private HashMap<UUID, Boolean> playerReady = new HashMap<>();
 	private HashMap<UUID, Triplet> playerAntiAFK = new HashMap<>();
 	private BukkitTask task;
+	private CreateNPCGui gui;
 	private int round;
 	
 	private Party(String name, World w, Location c1, Location c2, Location lobby, Location arena, List<String> list, Location npc) {
@@ -91,25 +94,32 @@ public class Party {
 			data.add(-1);
 			
 			if (str.contains(":"))	{
+				
+				int pos = str.indexOf(":");
+				Material mat = Material.getMaterial(str.substring(0, pos).toUpperCase());
 				data.clear();
-				if (floorLava.containsKey(Material.getMaterial(str.substring(0, str.indexOf(":")).toUpperCase())))	{
-					data = floorLava.get(Material.getMaterial(str.substring(0, str.indexOf(":")).toUpperCase()));
+				if (floorLava.containsKey(mat))	{
+					data = floorLava.get(mat);
 				}
 				
-				data.add(Integer.parseInt(str.substring(str.indexOf(":")+1)));
-				floorLava.put(Material.getMaterial(str.substring(0, str.indexOf(":")).toUpperCase()), data);
+				data.add(Integer.parseInt(str.substring(pos+1)));
+				floorLava.put(mat, data);
 				
 			} else {
 				floorLava.put(Material.getMaterial(str.toUpperCase()), data);
 			}
 		}
 		
-		CreateNPCGui gui = new CreateNPCGui(npc);
+		gui = new CreateNPCGui(npc);
 		gui.createGUI(this);
 
 		PARTY_LIST.put(name, this);
 	}
 
+	public void updateGUI(Inventory inventory)	{
+		gui.updateGUI(inventory, this);
+	}
+	
 	public void enableLava()	{
 		
 		Block b;

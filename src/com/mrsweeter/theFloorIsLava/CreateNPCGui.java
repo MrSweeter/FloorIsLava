@@ -60,16 +60,27 @@ public class CreateNPCGui {
 		
 	}
 	
-	public void createGUI(Party party)	{
-		npc.setCustomName("§6" + party.getName());
+	public void updateGUI(Inventory inventory, Party party)	{
 		
-		new ItemsLoader("JP", Material.MAGMA, "§9Rejoindre la partie", Arrays.asList("§fCliquez ici pour rejoindre la partie !"), 1, (byte) 0);
-		new ItemsLoader("SRP", Material.LAVA_BUCKET, "§9Prêt ?", Arrays.asList("§fCliquez ici pour signaler", "§fque vous être prêt !"), 1, (byte) 0);
+		String ready = "§e" + party.getPlayersReady() + "/" + party.getPlayers().size() + " joueurs prêts !";
+		String ig = "§e" + party.getPlayers().size() + " joueurs inscrits !";
 		
-		Inventory inventory = Bukkit.createInventory(null, 9, "§6" + party.getName());
+		new ItemsLoader("JP", Material.MAGMA, "§9Rejoindre la partie", Arrays.asList("§fCliquez ici pour rejoindre la partie !", "", ig), 1, (byte) 0);
+		new ItemsLoader("SRP", Material.LAVA_BUCKET, "§9Prêt ?", Arrays.asList("§fCliquez ici pour signaler", "§fque vous être prêt !", "", ready), 1, (byte) 0);
+		
 		inventory.setItem(3, ItemsLoader.ITEMS.get("JP"));
 		inventory.setItem(5, ItemsLoader.ITEMS.get("SRP"));
 		
 		InteractManager.NPC_MENU.put(npc.getUniqueId(), inventory);
+		
+	}
+
+	public void createGUI(Party party)	{
+		
+		npc.setCustomName("§6" + party.getName());
+		
+		Inventory inventory = Bukkit.createInventory(null, 9, "§6" + party.getName());
+		
+		updateGUI(inventory, party);
 	}
 }

@@ -43,13 +43,13 @@ public class InteractManager implements Listener	{
 			
 			Inventory inventory = NPC_MENU.get(victimE.getUniqueId());
 			if (inventory != null)	{
+				
 				event.setCancelled(true);
 				Player p = event.getPlayer();
 				
-				if (Party.players.get(p.getUniqueId()) == null || !Party.players.get(p.getUniqueId()).isStarted())	{
-					p.openInventory(inventory);
-				} else {
-					event.getPlayer().sendMessage("This game is already running");
+				if (Party.players.get(p.getUniqueId()) == null || !Party.players.get(p.getUniqueId()).isStarted())	{p.openInventory(inventory);}
+				else {
+					event.getPlayer().sendMessage("Partie déja en cours !");
 					event.setCancelled(true);
 				}
 			}
@@ -65,9 +65,7 @@ public class InteractManager implements Listener	{
 		if (victimE instanceof Villager){
 			
 			Inventory inventory = NPC_MENU.get(victimE.getUniqueId());
-			if (inventory != null)	{
-				event.setCancelled(true);
-			}
+			if (inventory != null)	{event.setCancelled(true);}
 		}	
 	}
 	
@@ -77,8 +75,10 @@ public class InteractManager implements Listener	{
 		ItemStack item = event.getCurrentItem();
 		
 		if (item != null && item.getType() != Material.AIR && event.getClickedInventory() != null)	{
+			
 			String nameGUI = event.getInventory().getName().replace("§6", "");
 			Party party = Party.PARTY_LIST.get(nameGUI);
+			
 			if (party != null)	{
 				
 				if (item.getType() == Material.MAGMA)	{
@@ -91,10 +91,10 @@ public class InteractManager implements Listener	{
 					event.setCancelled(true);
 					
 				} else if (item.getType() == Material.LAVA_BUCKET)	{
-					
 					party.setReady((Player) event.getWhoClicked());
 					event.setCancelled(true);
 				}
+				party.updateGUI(event.getInventory());
 			}
 		}
 	}

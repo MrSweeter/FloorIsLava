@@ -10,9 +10,11 @@ import com.mrsweeter.theFloorIsLava.Party;
 public class Death implements Listener {
 	
 	@EventHandler
-	public void onDeath(PlayerDeathEvent event){
+	public void onDeath(PlayerDeathEvent event)	{
+		
 		Player p = event.getEntity();
 		Party party = Party.players.get(p.getUniqueId());
+		
 		if(party != null){
 			event.setDeathMessage(null);
 			party.playerDeath(p);

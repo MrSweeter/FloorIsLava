@@ -3,12 +3,14 @@ package com.mrsweeter.theFloorIsLava;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mrsweeter.theFloorIsLava.Commands.Commands;
+import com.mrsweeter.theFloorIsLava.Commands.FilLeave;
+import com.mrsweeter.theFloorIsLava.Commands.FilReload;
 import com.mrsweeter.theFloorIsLava.Listeners.Damager;
 import com.mrsweeter.theFloorIsLava.Listeners.Death;
 import com.mrsweeter.theFloorIsLava.Listeners.InteractManager;
@@ -21,8 +23,7 @@ import Utils.PluginConfiguration;
 
 public class TheFloorIsLava extends JavaPlugin	{
 	
-	public static Logger log = Logger.getLogger("Minecraft - Focus");
-	public static PluginManager pm = Bukkit.getPluginManager();
+	public static Logger log = Logger.getLogger("Minecraft - TheFloorIsLava");
 	public static TheFloorIsLava instance;
 	
 	public static HashMap<String, Party> party = new HashMap<>();
@@ -38,14 +39,10 @@ public class TheFloorIsLava extends JavaPlugin	{
 		
 		reloadZone();
 		
-		pm.registerEvents(new Damager(), this);
-		pm.registerEvents(new JoinQuit(), this);
-		pm.registerEvents(new InteractManager(), this);
-		pm.registerEvents(new Death(), this);
-		pm.registerEvents(new StopCommandInParty(), this);
+		loadListener();
 		
-		getCommand("flleave").setExecutor(new Commands());
-		getCommand("flreload").setExecutor(new Commands());
+		getCommand("flleave").setExecutor(new FilLeave());
+		getCommand("flreload").setExecutor(new FilReload());
 		
 		log.info(ConsoleColor.GREEN + "=============== " + ConsoleColor.YELLOW + "FloorIsLava enable" + ConsoleColor.GREEN + " ===============" + ConsoleColor.RESET);
 	}
@@ -74,6 +71,24 @@ public class TheFloorIsLava extends JavaPlugin	{
 		}
 		
 		log.info(ConsoleColor.GREEN + "=============== " + ConsoleColor.YELLOW + "FloorIsLava disable" + ConsoleColor.GREEN + " ===============" + ConsoleColor.RESET);
+	}
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
+		
+		if(sender.isOp() || sender.hasPermission(command.getPermission())){
+			return command.execute(sender, label, args);
+		}
+		return false;
+	}
+	
+	private void loadListener(){
+		PluginManager pm = this.getServer().getPluginManager();
+		pm.registerEvents(new Damager(), this);
+		pm.registerEvents(new JoinQuit(), this);
+		pm.registerEvents(new InteractManager(), this);
+		pm.registerEvents(new Death(), this);
+		pm.registerEvents(new StopCommandInParty(), this);
 	}
 	
 	public ConfigurationCollection getConfigurations()	{

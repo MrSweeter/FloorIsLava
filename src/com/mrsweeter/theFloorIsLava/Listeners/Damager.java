@@ -18,8 +18,8 @@ public class Damager implements	Listener	{
 		
 		Entity victim = event.getEntity();
 		Block b = event.getDamager();
-		
 		Party party = Party.players.get(victim.getUniqueId());
+		
 		if (party != null)	{
 			if (b != null && b.getType() == Material.MAGMA)	{
 				event.setDamage(10);
