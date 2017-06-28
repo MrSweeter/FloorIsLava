@@ -332,6 +332,9 @@ public class Party {
 			return 2; // code 2 => déja dans une partie
 		}
 		
+		if (playerParty.size() == 0)	{
+			Bukkit.broadcastMessage("§6" + p.getName() + "§e vous attends au §a/warp tfil §e!");
+		}
 		players.put(eId, this);
 		this.playerParty.put(eId, p);
 		this.playerReady.put(eId, false);
@@ -361,7 +364,7 @@ public class Party {
 			p.closeInventory();
 			return false;
 		}
-		this.playerReady.replace(p.getUniqueId(), true);
+		this.playerReady.put(p.getUniqueId(), true);
 		this.sendUfo("§eLe joueur "+p.getName()+" est prêt !", true, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
 		p.closeInventory();
 		if(this.canStart()){
@@ -425,17 +428,17 @@ public class Party {
 				
 				this.sendUfo("§6Le joueur §b"+p.getName()+"§6 a quitté la partie :(", true, null);
 				
-				}
 				if(this.playerParty.size() == 1){
 					this.sendUfo("§6Fin de la partie car il n'y a plus assez de joueur :(", true, null);
 					this.reset();
 				}
 				p.teleport(lobby);
-				
 			}
 			this.tpLobby(p);
 			p.sendMessage("§6Vous avez quitter la partie :(");
 		}
+		gui.updateGUI(InteractManager.NPC_MENU.get(gui.getUniqueIdNPC()), this);
+	}
 
 	private void tpLobby(Player p) {
 		p.setHealth(20);
