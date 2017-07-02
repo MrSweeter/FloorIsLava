@@ -51,7 +51,7 @@ public class Party {
 					config.getString("name"),
 					w,
 					new Location(w, config.getDouble("corner-1.x"), config.getDouble("corner-1.y"), config.getDouble("corner-1.z")),
-					new Location(w, config.getDouble("corner-2.x"), config.getDouble("corner-2-y"), config.getDouble("corner-2.z")),
+					new Location(w, config.getDouble("corner-2.x"), config.getDouble("corner-2.y"), config.getDouble("corner-2.z")),
 					new Location(w, config.getDouble("teleport-to-manager.x"), config.getDouble("teleport-to-manager.y"), config.getDouble("teleport-to-manager.z"), (float) config.getDouble("teleport-to-manager.yaw"), (float) config.getDouble("teleport-to-manager.pitch")),
 					new Location(w, config.getDouble("teleport-to-arena.x"), config.getDouble("teleport-to-arena.y"), config.getDouble("teleport-to-arena.z"), (float) config.getDouble("teleport-to-arena.yaw"), (float) config.getDouble("teleport-to-arena.pitch")),
 					config.getStringList("floor"),
@@ -63,6 +63,7 @@ public class Party {
 	
 	public static HashMap<UUID, Party> players = new HashMap<>();
 	
+	private String id;
 	private String name;
 	private World world;
 	private Location corner1;
@@ -71,7 +72,7 @@ public class Party {
 	private Location arena;
 	private boolean isStarted;
 	private boolean isEnable;
-	private HashMap<Material, List<Integer>> floorLava = new HashMap<>();
+	private List<String> floorLava = new ArrayList<>();
 	private HashMap<Location, ItemStack> floorNormal = new HashMap<>();
 	private HashMap<UUID, Player> playerParty = new HashMap<>();
 	private HashMap<UUID, Boolean> playerReady = new HashMap<>();
@@ -81,6 +82,7 @@ public class Party {
 	private int round;
 	
 	private Party(String id, String name, World w, Location c1, Location c2, Location lobby, Location arena, List<String> list, Location npc) {
+		this.id = id;
 		this.name = name;
 		this.world = w;
 		
@@ -96,26 +98,7 @@ public class Party {
 		this.isEnable = false;
 		this.isStarted = false;
 		
-		for (String str : list)	{
-			List<Integer> data = new ArrayList<>();
-			data.add(-1);
-			
-			if (str.contains(":"))	{
-				
-				int pos = str.indexOf(":");
-				Material mat = Material.getMaterial(str.substring(0, pos).toUpperCase());
-				data.clear();
-				if (floorLava.containsKey(mat))	{
-					data = floorLava.get(mat);
-				}
-				
-				data.add(Integer.parseInt(str.substring(pos+1)));
-				floorLava.put(mat, data);
-				
-			} else {
-				floorLava.put(Material.getMaterial(str.toUpperCase()), data);
-			}
-		}
+		floorLava.addAll(list);
 		
 		gui = new CreateNPCGui(npc);
 		gui.createGUI(this);
@@ -132,10 +115,11 @@ public class Party {
 		gui.updateGUI(inventory, this);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void enableLava()	{
 		
 		Block b;
-		List<Integer> list;
+		String bPattern;
 		floorNormal.clear();
 		
 		if (!isEnable && isStarted)	{
@@ -144,19 +128,12 @@ public class Party {
 					for (int k = corner1.getBlockY(); k >= corner2.getBlockY(); k--)	{
 						
 						b = world.getBlockAt(new Location(world, i, k, j));
+						bPattern = b.getType() + "-" + b.getData();
 						
-						if (floorLava.containsKey(b.getType()))	{
+						if (floorLava.contains(b.getType() + "") || floorLava.contains(bPattern))	{
 							
-							list = floorLava.get(b.getType());
-							
-							if (list.size() == 1)	{
-								inMagmaList(list.get(0), i, k, j, b);
-							} else {
-								for (Integer v : list)	{
-									inMagmaList(v, i, k, j, b);
-								}
-							}
-							
+							floorNormal.put(new Location(world, i, k, j), new ItemStack(b.getType(), 1, b.getData()));
+							b.setType(Material.MAGMA);
 						}
 					}
 				}
@@ -164,14 +141,6 @@ public class Party {
 		}
 		
 		updateBlockAfk();
-	}
-	
-	@SuppressWarnings("deprecation")
-	private void inMagmaList(int data, int i, int k, int j, Block b)	{
-		if (data == -1 || data == b.getData())	{
-			floorNormal.put(new Location(world, i, k, j), new ItemStack(b.getType(), 1, b.getData()));
-			b.setType(Material.MAGMA);
-		}
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -357,7 +326,7 @@ public class Party {
 		}
 		
 		if (playerParty.size() == 0)	{
-			Bukkit.broadcastMessage(Messages.getMessage("PWFP").replace("{PLAYER}", p.getName()).replace("{PARTY}", this.name));
+			Bukkit.broadcastMessage(Messages.getMessage("PWFP").replace("{PLAYER}", p.getName()).replace("{PARTY}", this.id));
 		}
 		players.put(eId, this);
 		this.playerParty.put(eId, p);

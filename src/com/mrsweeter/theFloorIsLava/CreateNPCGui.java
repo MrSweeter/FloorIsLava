@@ -55,6 +55,7 @@ public class CreateNPCGui {
 	private void spawnNPC(Location location) {
 		
 		npc = (Villager) location.getWorld().spawnEntity(location, EntityType.VILLAGER);
+		npc.teleport(location);
 		npc.setAdult();
 		npc.setCustomNameVisible(true);
 		npc.setProfession(Profession.NITWIT);

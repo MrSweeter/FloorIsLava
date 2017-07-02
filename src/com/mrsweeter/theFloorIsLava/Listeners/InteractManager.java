@@ -78,7 +78,7 @@ public class InteractManager implements Listener	{
 		
 		if (item != null && item.getType() != Material.AIR && event.getClickedInventory() != null)	{
 			
-			String nameGUI = event.getInventory().getName().replace("§6", "");
+			String nameGUI = event.getInventory().getName();
 			Party party = Party.PARTY_LIST_NAMED.get(nameGUI);
 			
 			if (party != null)	{

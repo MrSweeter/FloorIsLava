@@ -28,15 +28,14 @@ modern:
     y: 0
     z: 31
   floor:
-  - STAINED_CLAY:5
+  - STAINED_CLAY-5
   - GRASS
   - STONE
   - DOUBLE_STONE_SLAB2
-  - WOOD_STEP:1
-  - WOOD_STEP:9
+  - WOOD_STEP-1
+  - WOOD_STEP-9
   - SNOW_BLOCK
   - WOOD
   - WATER
   - STATIONARY_WATER
   - COBBLE
-gliby_: 0

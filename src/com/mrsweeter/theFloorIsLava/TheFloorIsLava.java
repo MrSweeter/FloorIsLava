@@ -29,8 +29,7 @@ public class TheFloorIsLava extends JavaPlugin	{
 	
 	public static Logger log = Logger.getLogger("Minecraft - TheFloorIsLava");
 	public static TheFloorIsLava instance;
-	
-//	public static HashMap<String, Party> party = new HashMap<>();
+
 	private static ConfigurationCollection configs;
 	
 	public void onEnable()	{
