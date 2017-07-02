@@ -165,18 +165,22 @@ private static HashMap<UUID, CreateEditorSession> SESSIONS = new HashMap<UUID, C
 				
 				m = i.getType();
 				data = i.getData().getData();
-				
-				if (i.getAmount() > 1)	{data = i.getAmount();}
-				
-				if (data == 0)	{toAdd = m.toString();}
-				else {toAdd = m.toString() + "-" + data;}
-				
-				if (materialUse.contains(m.toString()))	{
-					if (floorBlock.remove(m.toString()))	{
-						floorBlock.add(m.toString() + "-" + 0);
-					} else {
-						toAdd = m.toString() + "-" + data;
+				if (m != Material.WATER_BUCKET)	{
+					if (i.getAmount() > 1)	{data = i.getAmount();}
+					
+					if (data == 0)	{toAdd = m.toString();}
+					else {toAdd = m.toString() + "-" + data;}
+					
+					if (materialUse.contains(m.toString()))	{
+						if (floorBlock.remove(m.toString()))	{
+							floorBlock.add(m.toString() + "-" + 0);
+						} else {
+							toAdd = m.toString() + "-" + data;
+						}
 					}
+				} else {
+					toAdd = "WATER";
+					floorBlock.add("STATIONARY_WATER");
 				}
 				materialUse.add(m.toString());
 				floorBlock.add(toAdd);
