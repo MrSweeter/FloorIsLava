@@ -25,11 +25,15 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.mrsweeter.theFloorIsLava.Listeners.InteractManager;
 
+import Utils.Messages;
 import Utils.Triplet;
 
 public class Party {
 	
 	public static HashMap<String, Party> PARTY_LIST = new HashMap<String, Party>();
+	public static HashMap<String, Party> PARTY_LIST_NAMED = new HashMap<String, Party>();
+	public static GameMode during = GameMode.ADVENTURE;
+	public static GameMode after = GameMode.SURVIVAL;
 	
 	public static Party createParty(ConfigurationSection config)	{
 		
@@ -43,6 +47,7 @@ public class Party {
 					pitch = config.getDouble("game-manager.pitch");
 			
 			return new Party(
+					config.getName(),
 					config.getString("name"),
 					w,
 					new Location(w, config.getDouble("corner-1.x"), config.getDouble("corner-1.y"), config.getDouble("corner-1.z")),
@@ -75,7 +80,7 @@ public class Party {
 	private CreateNPCGui gui;
 	private int round;
 	
-	private Party(String name, World w, Location c1, Location c2, Location lobby, Location arena, List<String> list, Location npc) {
+	private Party(String id, String name, World w, Location c1, Location c2, Location lobby, Location arena, List<String> list, Location npc) {
 		this.name = name;
 		this.world = w;
 		
@@ -114,8 +119,13 @@ public class Party {
 		
 		gui = new CreateNPCGui(npc);
 		gui.createGUI(this);
-
-		PARTY_LIST.put(name, this);
+		
+		if (PARTY_LIST.containsKey(id))	{
+			PARTY_LIST.get(id).gui.killNPC();
+		}
+		
+		PARTY_LIST.put(id, this);
+		PARTY_LIST_NAMED.put(name, this);
 	}
 
 	public void updateGUI(Inventory inventory)	{
@@ -187,7 +197,7 @@ public class Party {
 			
 			if (playerAntiAFK.get(uuid) != null && playerAntiAFK.get(uuid).isSame(triple))	{
 				p.damage(10);
-				p.sendMessage("§cVous devez vous déplacer entre chaque coulée !");
+				p.sendMessage(Messages.getMessage("MBR"));
 			}
 			else {playerAntiAFK.put(uuid, triple);}
 			
@@ -211,7 +221,7 @@ public class Party {
 	private void EnableEvent() {
 		
 		this.spawnPlayer();
-		this.sendUfo("§620 secondes avant la première coulée !", true, false, null);
+		this.sendUfo(Messages.getMessage("SBFR").replace("{TIME}", "20"), true, false, null);
 		
 		BukkitRunnable timer = new McTimerTask(20, this);
 		timer.runTaskTimer(TheFloorIsLava.instance, 0, 20);
@@ -230,7 +240,7 @@ public class Party {
 		
 		for(Player p: this.playerParty.values()){
 			p.teleport(this.arena);
-			p.setGameMode(GameMode.ADVENTURE);
+			p.setGameMode(during);
 			p.setFoodLevel(20);
 			p.setHealth(20);
 			p.setFlying(false);
@@ -296,7 +306,7 @@ public class Party {
 		int time = 20 - 2*round;
 		if (time < 3)	{time = 3;}
 		
-		this.sendUfo("§6" + time + " secondes avant la prochaine coulée !", true, false, null);
+		this.sendUfo(Messages.getMessage("SBNR").replace("{TIME}", "" + time), true, false, null);
 		
 		BukkitRunnable timer = new McTimerTask(time, this);
 		timer.runTaskTimer(TheFloorIsLava.instance, 0, 20);
@@ -315,6 +325,10 @@ public class Party {
 
 	public String getName() {
 		return name;
+	}
+	
+	public CreateNPCGui getNPCManager()	{
+		return gui;
 	}
 	
 	public void stop()	{
@@ -343,7 +357,7 @@ public class Party {
 		}
 		
 		if (playerParty.size() == 0)	{
-			Bukkit.broadcastMessage("§6" + p.getName() + "§e vous attends au §a/warp tfil §e!");
+			Bukkit.broadcastMessage(Messages.getMessage("PWFP").replace("{PLAYER}", p.getName()).replace("{PARTY}", this.name));
 		}
 		players.put(eId, this);
 		this.playerParty.put(eId, p);
@@ -365,17 +379,17 @@ public class Party {
 	
 	public boolean setReady(Player p){
 		if (this.playerReady.get(p.getUniqueId()) == null)	{
-			p.sendMessage("§cCe n'est pas votre partie !");
+			p.sendMessage(Messages.getMessage("NYP"));
 			p.closeInventory();
 			return false;
 		}
 		if(this.playerReady.get(p.getUniqueId()))	{
-			p.sendMessage("§cVous êtes déjà prêt !");
+			p.sendMessage(Messages.getMessage("AR"));
 			p.closeInventory();
 			return false;
 		}
 		this.playerReady.put(p.getUniqueId(), true);
-		this.sendUfo("§eLe joueur "+p.getName()+" est prêt !", true, true, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+		this.sendUfo(Messages.getMessage("PIR").replace("{PLAYER}", p.getName()), true, true, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
 		p.closeInventory();
 		if(this.canStart()){
 			this.start();
@@ -433,7 +447,7 @@ public class Party {
 	}
 
 	public void playerDeath(Player p) {
-		sendUfo("§e" + p.getName() + "§6 s'est noyé dans une coulée de lave !", true, false, Sound.ENTITY_BLAZE_DEATH);
+		sendUfo(Messages.getMessage("DIP").replace("{PLAYER}", p.getName()), true, false, Sound.ENTITY_BLAZE_DEATH);
 		tpLobby(p);
 		playerParty.remove(p.getUniqueId());
 		endParty();
@@ -443,16 +457,16 @@ public class Party {
 		if(this.removePlayer(p) == 1){
 			if(this.isStarted){
 				
-				this.sendUfo("§6Le joueur §b"+p.getName()+"§6 a quitté la partie :(", true, false, null);
+				this.sendUfo(Messages.getMessage("QP").replace("{PLAYER}", p.getName()), true, false, null);
 				
 				if(this.playerParty.size() == 1){
-					this.sendUfo("§6Fin de la partie car il n'y a plus assez de joueur :(", true, true, null);
+					this.sendUfo(Messages.getMessage("ENNOP"), true, true, null);
 					this.reset();
 				}
 				p.teleport(lobby);
 			}
 			this.tpLobby(p);
-			p.sendMessage("§6Vous avez quitter la partie :(");
+			p.sendMessage(Messages.getMessage("YQP"));
 		}
 		gui.updateGUI(InteractManager.NPC_MENU.get(gui.getUniqueIdNPC()), this);
 	}
@@ -464,7 +478,7 @@ public class Party {
 		for(PotionEffect pe: p.getActivePotionEffects()){
 			p.removePotionEffect(pe.getType());
 		}
-		p.setGameMode(GameMode.SURVIVAL);
+		p.setGameMode(after);
 		players.replace(p.getUniqueId(), null);
 	}
 

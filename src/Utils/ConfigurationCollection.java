@@ -54,7 +54,7 @@ public class ConfigurationCollection {
 	 */
 	public void addExistingConfiguration(String fileName)	{
 		try {
-			this.configs.put(fileName, new PluginConfiguration(pl, fileName+".yml", fileName+".yml", null));
+			this.configs.put(fileName, new PluginConfiguration(pl, fileName+".yml", null));
 		} catch (NullPointerException exception)	{
 			addFileConfiguration(fileName);
 		}

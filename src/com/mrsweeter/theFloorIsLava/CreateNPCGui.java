@@ -15,6 +15,8 @@ import org.bukkit.inventory.Inventory;
 import com.mrsweeter.theFloorIsLava.Listeners.InteractManager;
 import com.mrsweeter.theFloorIsLava.ObjectLoader.ItemsLoader;
 
+import Utils.Messages;
+
 public class CreateNPCGui {
 	
 	private static LinkedList<Villager> NPC_LIST = new LinkedList<>();
@@ -67,11 +69,11 @@ public class CreateNPCGui {
 	
 	public void updateGUI(Inventory inventory, Party party)	{
 		
-		String ready = "§e" + party.getPlayersReady() + "/" + party.getPlayers().size() + " joueurs prêts !";
-		String ig = "§e" + party.getPlayers().size() + " joueurs inscrits !";
+		String ready = party.getPlayersReady() + "/" + party.getPlayers().size() + Messages.getMessage("PR");
+		String ig = party.getPlayers().size() + Messages.getMessage("PP");
 		
-		new ItemsLoader("JP", Material.MAGMA, "§9Rejoindre la partie", Arrays.asList("§fCliquez ici pour rejoindre la partie !", "", ig), 1, (byte) 0);
-		new ItemsLoader("SRP", Material.LAVA_BUCKET, "§9Prêt ?", Arrays.asList("§fCliquez ici pour signaler", "§fque vous être prêt !", "", ready), 1, (byte) 0);
+		new ItemsLoader("JP", Material.MAGMA, Messages.getMessage("JP"), Arrays.asList(Messages.getMessage("CHJ"), "", ig), 1, (byte) 0);
+		new ItemsLoader("SRP", Material.LAVA_BUCKET, Messages.getMessage("R"), Arrays.asList(Messages.getMessage("CHSR"), "", ready), 1, (byte) 0);
 		
 		inventory.setItem(3, ItemsLoader.ITEMS.get("JP"));
 		inventory.setItem(5, ItemsLoader.ITEMS.get("SRP"));
@@ -82,9 +84,9 @@ public class CreateNPCGui {
 
 	public void createGUI(Party party)	{
 		
-		npc.setCustomName("§6" + party.getName());
+		npc.setCustomName(party.getName());
 		
-		Inventory inventory = Bukkit.createInventory(null, 9, "§6" + party.getName());
+		Inventory inventory = Bukkit.createInventory(null, 9, party.getName());
 		
 		updateGUI(inventory, party);
 	}

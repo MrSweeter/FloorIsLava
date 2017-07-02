@@ -1,16 +1,19 @@
 package com.mrsweeter.theFloorIsLava;
 
-import java.util.HashMap;
 import java.util.logging.Logger;
 
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.mrsweeter.theFloorIsLava.Commands.FilCreate;
 import com.mrsweeter.theFloorIsLava.Commands.FilLeave;
 import com.mrsweeter.theFloorIsLava.Commands.FilReload;
+import com.mrsweeter.theFloorIsLava.Commands.FilRemove;
+import com.mrsweeter.theFloorIsLava.Commands.FilTeleport;
 import com.mrsweeter.theFloorIsLava.Listeners.Damager;
 import com.mrsweeter.theFloorIsLava.Listeners.Death;
 import com.mrsweeter.theFloorIsLava.Listeners.InteractManager;
@@ -19,6 +22,7 @@ import com.mrsweeter.theFloorIsLava.Listeners.StopCommandInParty;
 
 import Utils.ConfigurationCollection;
 import Utils.ConsoleColor;
+import Utils.Messages;
 import Utils.PluginConfiguration;
 
 public class TheFloorIsLava extends JavaPlugin	{
@@ -26,7 +30,7 @@ public class TheFloorIsLava extends JavaPlugin	{
 	public static Logger log = Logger.getLogger("Minecraft - TheFloorIsLava");
 	public static TheFloorIsLava instance;
 	
-	public static HashMap<String, Party> party = new HashMap<>();
+//	public static HashMap<String, Party> party = new HashMap<>();
 	private static ConfigurationCollection configs;
 	
 	public void onEnable()	{
@@ -35,14 +39,25 @@ public class TheFloorIsLava extends JavaPlugin	{
 		
 		configs = new ConfigurationCollection(this);
 		configs.addExistingConfiguration("configuration");
+		configs.addExistingConfiguration("lang");
 		configs.addFileConfiguration("zones");
-		
-		reloadZone();
 		
 		loadListener();
 		
 		getCommand("flleave").setExecutor(new FilLeave());
 		getCommand("flreload").setExecutor(new FilReload());
+		getCommand("fltp").setExecutor(new FilTeleport());
+		getCommand("flcreate").setExecutor(new FilCreate());
+		getCommand("flremove").setExecutor(new FilRemove());
+		
+		for (String key : configs.getConfigByName("lang").getKeys(false))	{
+			Messages.loadMessages(configs.getConfigByName("lang").getConfigurationSection(key));
+		}
+		
+		Party.during = GameMode.valueOf(configs.getConfigByName("configuration").getString("party.gamemode-ig").toUpperCase());
+		Party.after = GameMode.valueOf(configs.getConfigByName("configuration").getString("party.gamemode-after").toUpperCase());
+		
+		reloadZone();
 		
 		log.info(ConsoleColor.GREEN + "=============== " + ConsoleColor.YELLOW + "FloorIsLava enable" + ConsoleColor.GREEN + " ===============" + ConsoleColor.RESET);
 	}
@@ -52,23 +67,24 @@ public class TheFloorIsLava extends JavaPlugin	{
 		ConfigurationSection zone;
 		for (String name : zones.getKeys(false))	{			
 			zone = zones.getConfigurationSection(name);
-			party.put(name, Party.createParty(zone));
-			if (party.get(name) == null)	{
-				party.remove(name);
-				log.info(ConsoleColor.YELLOW + "Zone " + name + " non-chargee, configuration vide" + ConsoleColor.RESET);
+			Party.createParty(zone);
+			if (Party.PARTY_LIST.get(name) == null)	{
+				Party.PARTY_LIST.remove(name);
+				log.info(ConsoleColor.YELLOW + Messages.getMessage("ECS").replace("{NAME}", name) + ConsoleColor.RESET);
 			}
-			else {log.info(ConsoleColor.YELLOW + "Zone " + name + " chargee" + ConsoleColor.RESET);}
+			else {log.info(ConsoleColor.YELLOW + Messages.getMessage("LZC").replace("{NAME}", name) + ConsoleColor.RESET);}
 		}
 	}
 
 	public void onDisable()	{
 		
 		CreateNPCGui.clear();
-		for (Party p : party.values())	{
+		for (Party p : Party.PARTY_LIST.values())	{
 			if (p !=null)	{
 				p.stop();
 			}
 		}
+		CreateEditorSession.clearAll();
 		
 		log.info(ConsoleColor.GREEN + "=============== " + ConsoleColor.YELLOW + "FloorIsLava disable" + ConsoleColor.GREEN + " ===============" + ConsoleColor.RESET);
 	}

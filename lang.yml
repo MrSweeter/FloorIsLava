@@ -1,0 +1,110 @@
+console-messages:
+  #Empty configuration section
+  ECS: "Zone <{NAME}> not loaded, empty configuration section"
+  #Load zone complete
+  LZC: "Zone <{NAME}> load complete"
+npc-messages:
+  #Game already start
+  GAS: "Party is already running"
+  #Game access
+  GA: "You enter in a party"
+  #Already in party
+  AIP: "You are already in a party"
+  #Join party
+  JP: Join party !
+  #Click here to join
+  CHJ: "Click here to join a party"
+  #Ready
+  R: "Ready ?"
+  #Click here to set ready
+  CHSR: "Click here to say you are ready"
+  # 0/0 Player ready
+  PR: " players ready !"
+  # 0/0 player in party
+  PP: " players in party"
+  #player wait you for party
+  PWFP: "{PLAYER} wait you to join a party, /fltp {PARTY}"
+  #No party named
+  NPN: "No party with this name"
+  #Already ready
+  AR: "You are already ready"
+  #Not your party
+  NYP: "It's not your party"
+  #player is ready
+  PIR: "Player {PLAYER} is ready !"
+party-messages:
+  #Use flleave to quit
+  UFLQ: "You must quit your party to execute this action !, /flleave"
+  #Move between round
+  MBR: "You must move between each lava flow !"
+  #secondes before first round
+  SBFR: "{TIME} secondes before the first lava flow"
+  #secondes before next round
+  SBNR: "{TIME} secondes before the next lava flow"
+  #Death in party
+  DIP: "{PLAYER} is death in lava flow"
+  #Quit party
+  QP: "{PLAYER} leave the party"
+  #End game not enough player
+  ENNOP: "End of party, not enough player"
+  #You quit party
+  YQP: "You leave the party"
+editor-messages:
+  #Party save complete
+  PSC: "Save of party complete"
+  #Lobby missing
+  LM: "Lobby missing"
+  #Spawn missing
+  SM: "Spawn missing"
+  #NPC missing
+  NPCM: "NPC missing"
+  #Corner 1 missing
+  C1M: "Corner 1 missing"
+  #Corner 2 missing
+  C2M: "Corner 2 missing"
+  #Create spawn point
+  CSP: "Spawn Arena"
+  #Create spawn point lore
+  CSPL: "Set spawn of arena"
+  #Create lobby point
+  CLP: "Lobby"
+  #Create lobby point lore
+  CLPL: "Set lobby of arena"
+  #Create npc point
+  CNPCP: "NPC-Manager"
+  #Create npc point lore
+  CNPCPL: "Set NPC of arena"
+  #Create corner point
+  CC1P: "Corner 1"
+  #Create corner point lore
+  CC1PL: "Set corner 1 of arena"
+  #Create corner point
+  CC2P: "Corner 2"
+  #Create corner point lore
+  CC2PL: "Set corner 2 of arena"
+  #Leave editor
+  LE: "Leave editor"
+  #Leave editor lore
+  LEL: "Leave editor, don't forget to save"
+  #Save party editor
+  SPE: "Save-Create"
+  #Save party editor lore
+  SPEL: "Create party in plugin instance"
+  #Create floor
+  CF: "Floor"
+  #Create floor lore
+  CFL: Fill the chest with floor block
+  #Quit editor for action
+  QEFA: "You must leave editor to do this"
+  #Leave editor chat
+  LEC: "You leave editor"
+  #Create lobby chat
+  CLPC: "Lobby set in {X} {Y} {Z}"
+  #Create npc chat
+  CNPCPC: "NPC-Manager set in {X} {Y} {Z}"
+  #Create spawn chat
+  CSPC: "Spawn set in {X} {Y} {Z}"
+  #Corner 1 chat
+  CC1PC: "Corner 1 set in {X} {Y} {Z}"
+  #Corner 2 chat
+  CC2PC: "Corner 2 set in {X} {Y} {Z}"

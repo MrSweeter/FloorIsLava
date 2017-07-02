@@ -5,11 +5,43 @@ author: MrSweeter
 description: Mini game
 
 commands:
+  flcreate:
+    description: Create a party with editor
+    usage: §c/flcreate <party name>
+    permission: floorlava.create
+  flremove:
+    description: Remove a party from config
+    usage: §c/flremove <party name>
+    permission: floorlava.remove
   flleave:
     description: Start party
     usage: §c/flleave
     permission: floorlava.leave
+  fltp:
+    description: Teleport you to a party manager
+    usage: §c/fltp <party name>
+    permission: floorlava.tp
   flreload:
     description: Start party
     usage: §c/flreload
     permission: floorlava.reload
+
+permissions:
+  floorlava.*:
+    description: Gives access to all inferno commands
+    default: op
+    children:
+      floorlava.edit: true
+      floorlava.play: true
+      floorlava.reload: true
+  floorlava.edit:
+    description: Gives access to editor commands
+    children:
+      floorlava.create: true
+      floorlava.remove: true
+  floorlava.play:
+    description: Gives access to game commands
+    default: true
+    children:
+      floorlava.tp: true
+      floorlava.leave: true

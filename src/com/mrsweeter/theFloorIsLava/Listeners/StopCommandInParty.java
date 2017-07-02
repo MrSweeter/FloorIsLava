@@ -6,6 +6,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.mrsweeter.theFloorIsLava.Party;
 
+import Utils.Messages;
+
 public class StopCommandInParty implements Listener	{
 	
 	@EventHandler
@@ -15,7 +17,7 @@ public class StopCommandInParty implements Listener	{
 		
 		if(p != null && !event.getMessage().matches("/flleave") && !event.getPlayer().isOp())	{
 			event.setCancelled(true);
-			event.getPlayer().sendMessage("§4Vous devez quitter la partie pour faire cette commande. /flleave");
+			event.getPlayer().sendMessage(Messages.getMessage("UFLQ"));
 		}
 	}
 }

@@ -18,6 +18,8 @@ import org.bukkit.util.Vector;
 
 import com.mrsweeter.theFloorIsLava.Party;
 
+import Utils.Messages;
+
 public class InteractManager implements Listener	{
 	
 	public static HashMap<UUID, Inventory> NPC_MENU = new HashMap<>();
@@ -49,7 +51,7 @@ public class InteractManager implements Listener	{
 				
 				if (Party.players.get(p.getUniqueId()) == null || !Party.players.get(p.getUniqueId()).isStarted())	{p.openInventory(inventory);}
 				else {
-					event.getPlayer().sendMessage("Partie déja en cours !");
+					event.getPlayer().sendMessage(Messages.getMessage("GAS"));
 					event.setCancelled(true);
 				}
 			}
@@ -77,16 +79,16 @@ public class InteractManager implements Listener	{
 		if (item != null && item.getType() != Material.AIR && event.getClickedInventory() != null)	{
 			
 			String nameGUI = event.getInventory().getName().replace("§6", "");
-			Party party = Party.PARTY_LIST.get(nameGUI);
+			Party party = Party.PARTY_LIST_NAMED.get(nameGUI);
 			
 			if (party != null)	{
 				
 				if (item.getType() == Material.MAGMA)	{
 					
 					switch (party.addPlayer((Player) event.getWhoClicked()))	{
-					case 1: event.getWhoClicked().sendMessage("Vous accéder à une partie"); break;
-					case 6: event.getWhoClicked().sendMessage("Partie en cours"); break;
-					case 2: event.getWhoClicked().sendMessage("Vous êtes déjà dans une partie"); break;
+					case 1: event.getWhoClicked().sendMessage(Messages.getMessage("GA")); break;
+					case 6: event.getWhoClicked().sendMessage(Messages.getMessage("GAS")); break;
+					case 2: event.getWhoClicked().sendMessage(Messages.getMessage("AIP")); break;
 					}
 					event.setCancelled(true);
 					
