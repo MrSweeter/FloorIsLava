@@ -1,3 +1,6 @@
 party:
-  gamemode-ig: "CREATIVE"
-  gamemode-after: "SPECTATOR"
+  gamemode-ig: "ADVENTURE"
+  gamemode-after: "SURVIVAL"
+  countdown-start: 20
+  countdown-step: 2
+  lava-time: 4

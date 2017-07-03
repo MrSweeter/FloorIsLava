@@ -5,106 +5,106 @@ console-messages:
   LZC: "Zone <{NAME}> load complete"
 npc-messages:
   #Game already start
-  GAS: "Party is already running"
+  GAS: "§cParty is already running"
   #Game access
-  GA: "You enter in a party"
+  GA: "§6You enter in a party"
   #Already in party
-  AIP: "You are already in a party"
+  AIP: "§cYou are already in a party"
   #Join party
-  JP: Join party !
+  JP: §9§lJoin party !
   #Click here to join
-  CHJ: "Click here to join a party"
+  CHJ: "§fClick here to join a party"
   #Ready
-  R: "Ready ?"
+  R: "§9§lReady ?"
   #Click here to set ready
-  CHSR: "Click here to say you are ready"
+  CHSR: "§fClick here to say you are ready"
   # 0/0 Player ready
-  PR: " players ready !"
+  PR: "§e{VALUE} §6players ready !"
   # 0/0 player in party
-  PP: " players in party"
+  PP: "§e{VALUE} §6players in party"
   #player wait you for party
-  PWFP: "{PLAYER} wait you to join a party, /fltp {PARTY}"
+  PWFP: "§b{PLAYER} §6wait you to join a party, §a/fltp {PARTY}"
   #No party named
-  NPN: "No party with this name"
+  NPN: "§cNo party with this name"
   #Already ready
-  AR: "You are already ready"
+  AR: "§cYou are already ready"
   #Not your party
-  NYP: "It's not your party"
+  NYP: "§cIt's not your party"
   #player is ready
-  PIR: "Player {PLAYER} is ready !"
+  PIR: "§6Player §b{PLAYER} §6is ready !"
 party-messages:
   #Use flleave to quit
-  UFLQ: "You must quit your party to execute this action !, /flleave"
+  UFLQ: "§cYou must quit your party to execute this action !, /flleave"
   #Move between round
-  MBR: "You must move between each lava flow !"
+  MBR: "§cYou must move between each lava flow !"
   #secondes before first round
-  SBFR: "{TIME} secondes before the first lava flow"
+  SBFR: "§b{TIME} §6secondes before the first lava flow"
   #secondes before next round
-  SBNR: "{TIME} secondes before the next lava flow"
+  SBNR: "§b{TIME} §6secondes before the next lava flow"
   #Death in party
-  DIP: "{PLAYER} is death in lava flow"
+  DIP: "§b{PLAYER} §6is death in lava flow"
   #Quit party
-  QP: "{PLAYER} leave the party"
+  QP: "§b{PLAYER} §6leave the party"
   #End game not enough player
-  ENNOP: "End of party, not enough player"
+  ENNOP: "§cEnd of party, not enough player"
   #You quit party
-  YQP: "You leave the party"
+  YQP: "§6You leave the party"
 editor-messages:
   #Party save complete
-  PSC: "Save of party complete"
+  PSC: "§aSave of party complete"
   #Lobby missing
-  LM: "Lobby missing"
+  LM: "§cLobby missing"
   #Spawn missing
-  SM: "Spawn missing"
+  SM: "§cSpawn missing"
   #NPC missing
-  NPCM: "NPC missing"
+  NPCM: "§cNPC missing"
   #Corner 1 missing
-  C1M: "Corner 1 missing"
+  C1M: "§cCorner 1 missing"
   #Corner 2 missing
-  C2M: "Corner 2 missing"
+  C2M: "§cCorner 2 missing"
   #Create spawn point
-  CSP: "Spawn Arena"
+  CSP: "§9Spawn Arena"
   #Create spawn point lore
-  CSPL: "Set spawn of arena"
+  CSPL: "§fSet spawn of arena"
   #Create lobby point
-  CLP: "Lobby"
+  CLP: "§9Lobby"
   #Create lobby point lore
-  CLPL: "Set lobby of arena"
+  CLPL: "§fSet lobby of arena"
   #Create npc point
-  CNPCP: "NPC-Manager"
+  CNPCP: "§9NPC-Manager"
   #Create npc point lore
-  CNPCPL: "Set NPC of arena"
+  CNPCPL: "§fSet NPC of arena"
   #Create corner point
-  CC1P: "Corner 1"
+  CC1P: "§9Corner 1"
   #Create corner point lore
-  CC1PL: "Set corner 1 of arena"
+  CC1PL: "§fSet corner 1 of arena"
   #Create corner point
-  CC2P: "Corner 2"
+  CC2P: "§9Corner 2"
   #Create corner point lore
-  CC2PL: "Set corner 2 of arena"
+  CC2PL: "§fSet corner 2 of arena"
   #Leave editor
-  LE: "Leave editor"
+  LE: "§9Leave editor"
   #Leave editor lore
-  LEL: "Leave editor, don't forget to save"
+  LEL: "§fLeave editor, don't forget to save"
   #Save party editor
-  SPE: "Save-Create"
+  SPE: "§9Save-Create"
   #Save party editor lore
-  SPEL: "Create party in plugin instance"
+  SPEL: "§fCreate party in plugin instance"
   #Create floor
-  CF: "Floor"
+  CF: "§9Floor"
   #Create floor lore
-  CFL: Fill the chest with floor block
+  CFL: §fFill the chest with floor block
   #Quit editor for action
-  QEFA: "You must leave editor to do this"
+  QEFA: "§cYou must leave editor to do this"
   #Leave editor chat
-  LEC: "You leave editor"
+  LEC: "§6You leave editor"
   #Create lobby chat
-  CLPC: "Lobby set in {X} {Y} {Z}"
+  CLPC: "§eLobby set in {X} {Y} {Z}"
   #Create npc chat
-  CNPCPC: "NPC-Manager set in {X} {Y} {Z}"
+  CNPCPC: "§eNPC-Manager set in {X} {Y} {Z}"
   #Create spawn chat
-  CSPC: "Spawn set in {X} {Y} {Z}"
+  CSPC: "§eSpawn set in {X} {Y} {Z}"
   #Corner 1 chat
-  CC1PC: "Corner 1 set in {X} {Y} {Z}"
+  CC1PC: "§eCorner 1 set in {X} {Y} {Z}"
   #Corner 2 chat
-  CC2PC: "Corner 2 set in {X} {Y} {Z}"
+  CC2PC: "§eCorner 2 set in {X} {Y} {Z}"

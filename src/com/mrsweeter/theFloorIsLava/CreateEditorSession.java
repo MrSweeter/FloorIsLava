@@ -186,6 +186,11 @@ private static HashMap<UUID, CreateEditorSession> SESSIONS = new HashMap<UUID, C
 				floorBlock.add(toAdd);
 			}
 		}
+		toAdd = Messages.getMessage("CF") + ": §f";
+		for (String str : floorBlock)	{
+			toAdd += str + ", ";
+		}
+		this.p.sendMessage(toAdd);
 		return floorBlock;
 	}
 	

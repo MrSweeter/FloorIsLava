@@ -1,21 +1,57 @@
+noctabato:
+  name: §9§lShip of Nocta
+  world: sweetdream
+  game-manager:
+    x: 2.5
+    y: 22.0
+    z: -78.5
+    yaw: 90
+    pitch: 0
+  teleport-to-manager:
+    x: -1.5
+    y: 22.0
+    z: -78.5
+    yaw: 270
+    pitch: 0
+  teleport-to-arena:
+    x: -17.5
+    y: 17.0
+    z: -78.5
+    yaw: 90
+    pitch: 0
+  corner-1:
+    x: -32
+    y: 16
+    z: -90
+  corner-2:
+    x: 54
+    y: 30
+    z: -68
+  floor:
+  - WOOD-1
+  - QUARTZ_BLOCK
+  - WOOD_STEP-9
+  - GRASS
+  - STATIONARY_WATER
+  - WATER
 modern:
-  name: Modern house
+  name: §9§lModern house
   world: sweetdream
   game-manager:
     x: 6.5
-    y: 15.25
+    y: 15
     z: 23.5
     yaw: 0
     pitch: 0
   teleport-to-manager:
     x: 6.5
-    y: 15.25
+    y: 15
     z: 26.5
     yaw: 180
     pitch: 0
   teleport-to-arena:
     x: -2.5
-    y: 10.25
+    y: 10
     z: 26.5
     yaw: 0
     pitch: 0

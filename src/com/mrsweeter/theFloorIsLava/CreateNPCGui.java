@@ -70,8 +70,8 @@ public class CreateNPCGui {
 	
 	public void updateGUI(Inventory inventory, Party party)	{
 		
-		String ready = party.getPlayersReady() + "/" + party.getPlayers().size() + Messages.getMessage("PR");
-		String ig = party.getPlayers().size() + Messages.getMessage("PP");
+		String ready = Messages.getMessage("PR").replace("{VALUE}", party.getPlayersReady() + "/" + party.getPlayers().size());
+		String ig = Messages.getMessage("PP").replace("{VALUE}", party.getPlayers().size() + "");
 		
 		new ItemsLoader("JP", Material.MAGMA, Messages.getMessage("JP"), Arrays.asList(Messages.getMessage("CHJ"), "", ig), 1, (byte) 0);
 		new ItemsLoader("SRP", Material.LAVA_BUCKET, Messages.getMessage("R"), Arrays.asList(Messages.getMessage("CHSR"), "", ready), 1, (byte) 0);

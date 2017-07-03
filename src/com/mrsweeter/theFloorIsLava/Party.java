@@ -34,6 +34,9 @@ public class Party {
 	public static HashMap<String, Party> PARTY_LIST_NAMED = new HashMap<String, Party>();
 	public static GameMode during = GameMode.ADVENTURE;
 	public static GameMode after = GameMode.SURVIVAL;
+	public static int coutdownStart = 20;
+	public static int countdownStep = 2;
+	public static int lavaTime = 2;
 	
 	public static Party createParty(ConfigurationSection config)	{
 		
@@ -190,9 +193,9 @@ public class Party {
 	private void EnableEvent() {
 		
 		this.spawnPlayer();
-		this.sendUfo(Messages.getMessage("SBFR").replace("{TIME}", "20"), true, false, null);
+		this.sendUfo(Messages.getMessage("SBFR").replace("{TIME}", "" + coutdownStart), true, false, null);
 		
-		BukkitRunnable timer = new McTimerTask(20, this);
+		BukkitRunnable timer = new McTimerTask(coutdownStart, this);
 		timer.runTaskTimer(TheFloorIsLava.instance, 0, 20);
 		
 		this.isEnable = false;
@@ -202,7 +205,7 @@ public class Party {
 			public void run() {
 				enable();
 			}
-		}.runTaskLater(TheFloorIsLava.instance, 400);
+		}.runTaskLater(TheFloorIsLava.instance, coutdownStart*20);
 	}
 
 	private void spawnPlayer() {
@@ -265,15 +268,15 @@ public class Party {
 			public void run() {
 				disable();
 			}
-		}.runTaskLater(TheFloorIsLava.instance, 80);
+		}.runTaskLater(TheFloorIsLava.instance, lavaTime);
 	}
 	
 	public void disable()	{
 		if (task != null)	{task.cancel();}
 		
 		round++;
-		int time = 20 - 2*round;
-		if (time < 3)	{time = 3;}
+		int time = coutdownStart - countdownStep*round;
+		if (time < countdownStep)	{time = countdownStep;}
 		
 		this.sendUfo(Messages.getMessage("SBNR").replace("{TIME}", "" + time), true, false, null);
 		

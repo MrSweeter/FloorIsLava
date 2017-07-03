@@ -45,7 +45,7 @@ public class TheFloorIsLava extends JavaPlugin	{
 		
 		getCommand("flleave").setExecutor(new FilLeave());
 		getCommand("flreload").setExecutor(new FilReload());
-		getCommand("fltp").setExecutor(new FilTeleport());
+		getCommand("flteleport").setExecutor(new FilTeleport());
 		getCommand("flcreate").setExecutor(new FilCreate());
 		getCommand("flremove").setExecutor(new FilRemove());
 		
@@ -55,6 +55,9 @@ public class TheFloorIsLava extends JavaPlugin	{
 		
 		Party.during = GameMode.valueOf(configs.getConfigByName("configuration").getString("party.gamemode-ig").toUpperCase());
 		Party.after = GameMode.valueOf(configs.getConfigByName("configuration").getString("party.gamemode-after").toUpperCase());
+		Party.coutdownStart = configs.getConfigByName("configuration").getInt("party.countdown-start");
+		Party.countdownStep = configs.getConfigByName("configuration").getInt("party.countdown-step");
+		Party.lavaTime = configs.getConfigByName("configuration").getInt("party.lava-time");
 		
 		reloadZone();
 		
