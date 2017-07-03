@@ -2,23 +2,19 @@ package com.mrsweeter.theFloorIsLava;
 
 import java.util.logging.Logger;
 
-import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mrsweeter.theFloorIsLava.Commands.FilCreate;
-import com.mrsweeter.theFloorIsLava.Commands.FilLeave;
-import com.mrsweeter.theFloorIsLava.Commands.FilReload;
-import com.mrsweeter.theFloorIsLava.Commands.FilRemove;
-import com.mrsweeter.theFloorIsLava.Commands.FilTeleport;
 import com.mrsweeter.theFloorIsLava.Listeners.Damager;
 import com.mrsweeter.theFloorIsLava.Listeners.Death;
 import com.mrsweeter.theFloorIsLava.Listeners.InteractManager;
 import com.mrsweeter.theFloorIsLava.Listeners.JoinQuit;
 import com.mrsweeter.theFloorIsLava.Listeners.StopCommandInParty;
+import com.mrsweeter.theFloorIsLava.ObjectLoader.CommandsLoader;
+import com.mrsweeter.theFloorIsLava.ObjectLoader.ConfigurationLoader;
 
 import Utils.ConfigurationCollection;
 import Utils.ConsoleColor;
@@ -36,28 +32,17 @@ public class TheFloorIsLava extends JavaPlugin	{
 		
 		instance = this;
 		
-		configs = new ConfigurationCollection(this);
-		configs.addExistingConfiguration("configuration");
-		configs.addExistingConfiguration("lang");
-		configs.addFileConfiguration("zones");
+		configs = ConfigurationLoader.createFile(this);
 		
 		loadListener();
 		
-		getCommand("flleave").setExecutor(new FilLeave());
-		getCommand("flreload").setExecutor(new FilReload());
-		getCommand("flteleport").setExecutor(new FilTeleport());
-		getCommand("flcreate").setExecutor(new FilCreate());
-		getCommand("flremove").setExecutor(new FilRemove());
+		CommandsLoader.registerCommand(this);
 		
 		for (String key : configs.getConfigByName("lang").getKeys(false))	{
 			Messages.loadMessages(configs.getConfigByName("lang").getConfigurationSection(key));
 		}
 		
-		Party.during = GameMode.valueOf(configs.getConfigByName("configuration").getString("party.gamemode-ig").toUpperCase());
-		Party.after = GameMode.valueOf(configs.getConfigByName("configuration").getString("party.gamemode-after").toUpperCase());
-		Party.coutdownStart = configs.getConfigByName("configuration").getInt("party.countdown-start");
-		Party.countdownStep = configs.getConfigByName("configuration").getInt("party.countdown-step");
-		Party.lavaTime = configs.getConfigByName("configuration").getInt("party.lava-time");
+		ConfigurationLoader.loadConfiguration(configs.getConfigByName("configuration"));
 		
 		reloadZone();
 		
