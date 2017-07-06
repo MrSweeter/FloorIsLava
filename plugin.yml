@@ -7,7 +7,7 @@ description: Mini game
 commands:
   flcreate:
     description: Create a party with editor
-    usage: "§c/flcreate <party name> <display name>, §cReplace space with '_', §cReplace color code minecraft with &"
+    usage: "§c/flcreate <party name> [<display name>, §cReplace space with '_', §cReplace color code minecraft with &]"
     permission: floorlava.create
   flremove:
     description: Remove a party from config
