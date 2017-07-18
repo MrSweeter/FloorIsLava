@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -33,7 +34,7 @@ import Utils.PluginConfiguration;
 
 public class CreateEditorSession implements Listener	{
 	
-private static HashMap<UUID, CreateEditorSession> SESSIONS = new HashMap<UUID, CreateEditorSession>();
+	private static HashMap<UUID, CreateEditorSession> SESSIONS = new HashMap<UUID, CreateEditorSession>();
 	
 	public static void clearAll(){
 		for(CreateEditorSession session : SESSIONS.values()){
@@ -113,11 +114,11 @@ private static HashMap<UUID, CreateEditorSession> SESSIONS = new HashMap<UUID, C
 		
 		desc.clear();
 		desc.add(Messages.getMessage("CC1PL"));
-		createCorner1 = createItemStack(Material.STRUCTURE_BLOCK, Messages.getMessage("CC1P"), desc, 0);
+		createCorner1 = createItemStack(Material.WOOL, Messages.getMessage("CC1P"), desc, 11);
 		
 		desc.clear();
 		desc.add(Messages.getMessage("CC2PL"));
-		createCorner2 = createItemStack(Material.STRUCTURE_BLOCK, Messages.getMessage("CC2P"), desc, 0);
+		createCorner2 = createItemStack(Material.WOOL, Messages.getMessage("CC2P"), desc, 14);
 		
 		desc.clear();
 		desc.add(Messages.getMessage("CFL"));
@@ -292,9 +293,23 @@ private static HashMap<UUID, CreateEditorSession> SESSIONS = new HashMap<UUID, C
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void cantPoseBlock(BlockPlaceEvent e){
 		if(e.getPlayer().equals(this.p)){
+			
+			if (e.getItemInHand().isSimilar(this.createCorner1))	{
+				
+				this.corner1Loc = e.getBlock().getLocation();
+				String text = Messages.getMessage("CC1PC");
+				p.sendMessage(text.replace("{X}", "" + this.corner1Loc.getBlockX()).replace("{Y}", "" + this.corner1Loc.getBlockY()).replace("{Z}", "" + this.corner1Loc.getBlockZ()));
+				
+			} else if (e.getItemInHand().isSimilar(this.createCorner2))	{
+				
+				this.corner2Loc = e.getBlock().getLocation();
+				String text = Messages.getMessage("CC2PC");
+				p.sendMessage(text.replace("{X}", "" + this.corner2Loc.getBlockX()).replace("{Y}", "" + this.corner2Loc.getBlockY()).replace("{Z}", "" + this.corner2Loc.getBlockZ()));
+				
+			}
 			e.setCancelled(true);
 		}
 	}
@@ -322,7 +337,9 @@ private static HashMap<UUID, CreateEditorSession> SESSIONS = new HashMap<UUID, C
 	
 	@EventHandler
 	public void useItem(PlayerInteractEvent e){
-		e.setCancelled(true);
+		if (!(e.getItem().isSimilar(createCorner1) || e.getItem().isSimilar(createCorner2) || e.getItem().isSimilar(createSpawn)))	{
+			e.setCancelled(true);
+		}
 		if(e.getPlayer().equals(this.p) && e.getItem() != null){
 			Player p = e.getPlayer();
 			if(e.getItem().isSimilar(this.createParty))	{
@@ -352,18 +369,18 @@ private static HashMap<UUID, CreateEditorSession> SESSIONS = new HashMap<UUID, C
 				String text = Messages.getMessage("CNPCPC");
 				p.sendMessage(text.replace("{X}", "" + this.manager.getBlockX()).replace("{Y}", "" + this.manager.getBlockY()).replace("{Z}", "" + this.manager.getBlockZ()));
 				
-			} else if (e.getItem().isSimilar(this.createCorner1))	{
-				
-				this.corner1Loc = e.getPlayer().getLocation();
-				String text = Messages.getMessage("CC1PC");
-				p.sendMessage(text.replace("{X}", "" + this.corner1Loc.getBlockX()).replace("{Y}", "" + this.corner1Loc.getBlockY()).replace("{Z}", "" + this.corner1Loc.getBlockZ()));
-				
-			} else if (e.getItem().isSimilar(this.createCorner2))	{
-				
-				this.corner2Loc = e.getPlayer().getLocation();
-				String text = Messages.getMessage("CC2PC");
-				p.sendMessage(text.replace("{X}", "" + this.corner2Loc.getBlockX()).replace("{Y}", "" + this.corner2Loc.getBlockY()).replace("{Z}", "" + this.corner2Loc.getBlockZ()));
-				
+//			} else if (e.getItem().isSimilar(this.createCorner1))	{
+//				
+//				this.corner1Loc = e.getPlayer().getLocation();
+//				String text = Messages.getMessage("CC1PC");
+//				p.sendMessage(text.replace("{X}", "" + this.corner1Loc.getBlockX()).replace("{Y}", "" + this.corner1Loc.getBlockY()).replace("{Z}", "" + this.corner1Loc.getBlockZ()));
+//				
+//			} else if (e.getItem().isSimilar(this.createCorner2))	{
+//				
+//				this.corner2Loc = e.getPlayer().getLocation();
+//				String text = Messages.getMessage("CC2PC");
+//				p.sendMessage(text.replace("{X}", "" + this.corner2Loc.getBlockX()).replace("{Y}", "" + this.corner2Loc.getBlockY()).replace("{Z}", "" + this.corner2Loc.getBlockZ()));
+//				
 			} else if (e.getItem().isSimilar(createFloor))	{
 				
 				p.openInventory(floor);

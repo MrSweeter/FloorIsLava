@@ -25,6 +25,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.mrsweeter.theFloorIsLava.Listeners.InteractManager;
 
+import Utils.ConsoleColor;
 import Utils.Messages;
 import Utils.Triplet;
 
@@ -36,7 +37,7 @@ public class Party {
 	public static GameMode after = GameMode.SURVIVAL;
 	public static int coutdownStart = 20;
 	public static int countdownStep = 2;
-	public static int lavaTime = 2;
+	public static int lavaTime = 40;
 	
 	public static Party createParty(ConfigurationSection config)	{
 		
@@ -85,6 +86,12 @@ public class Party {
 	private int round;
 	
 	private Party(String id, String name, World w, Location c1, Location c2, Location lobby, Location arena, List<String> list, Location npc) {
+		
+		if (id == null || name == null || w == null || c1 == null || c2 == null ||  lobby == null || arena == null || list == null || npc == null)	{
+			TheFloorIsLava.log.info(ConsoleColor.YELLOW + "Data missing for party named: " + name + ConsoleColor.RESET);
+			return;
+		}
+		
 		this.id = id;
 		this.name = name;
 		this.world = w;
@@ -103,15 +110,19 @@ public class Party {
 		
 		floorLava.addAll(list);
 		
-		gui = new CreateNPCGui(npc);
-		gui.createGUI(this);
-		
-		if (PARTY_LIST.containsKey(id))	{
-			PARTY_LIST.get(id).gui.killNPC();
+		gui = new CreateNPCGui(npc, name);
+		if (gui != null)	{
+			gui.createGUI(this);
+			
+			if (PARTY_LIST.containsKey(id))	{
+				PARTY_LIST.get(id).gui.killNPC();
+			}
+			
+			PARTY_LIST.put(id, this);
+			PARTY_LIST_NAMED.put(name, this);
+		} else {
+			TheFloorIsLava.log.info(ConsoleColor.YELLOW + "Party: " + name + " not loader" + ConsoleColor.RESET);
 		}
-		
-		PARTY_LIST.put(id, this);
-		PARTY_LIST_NAMED.put(name, this);
 	}
 
 	public void updateGUI(Inventory inventory)	{
@@ -192,6 +203,7 @@ public class Party {
 
 	private void EnableEvent() {
 		
+		this.round = 0;
 		this.spawnPlayer();
 		this.sendUfo(Messages.getMessage("SBFR").replace("{TIME}", "" + coutdownStart), true, false, null);
 		

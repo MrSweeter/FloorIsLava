@@ -26,7 +26,7 @@ public class ConfigurationLoader {
 		Party.after = GameMode.valueOf(config.getString("party.gamemode-after").toUpperCase());
 		Party.coutdownStart = config.getInt("party.countdown-start");
 		Party.countdownStep = config.getInt("party.countdown-step");
-		Party.lavaTime = config.getInt("party.lava-time");
+		Party.lavaTime = config.getInt("party.lava-time")*20;
 		
 	}
 }

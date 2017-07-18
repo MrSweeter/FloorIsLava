@@ -15,6 +15,7 @@ import org.bukkit.inventory.Inventory;
 import com.mrsweeter.theFloorIsLava.Listeners.InteractManager;
 import com.mrsweeter.theFloorIsLava.ObjectLoader.ItemsLoader;
 
+import Utils.ConsoleColor;
 import Utils.Messages;
 
 public class CreateNPCGui {
@@ -30,9 +31,10 @@ public class CreateNPCGui {
 	
 	private Villager npc;
 	
-	public CreateNPCGui(Location location)	{
-		this.spawnNPC(location);
-		NPC_LIST.add(npc);
+	public CreateNPCGui(Location location, String name)	{
+		if (this.spawnNPC(location, name))	{
+			NPC_LIST.add(npc);
+		}
 	}
 	
 	public Location getLoc()	{
@@ -52,7 +54,9 @@ public class CreateNPCGui {
 		return npc.getUniqueId();
 	}
 
-	private void spawnNPC(Location location) {
+	private boolean spawnNPC(Location location, String name) {
+		
+		if (location == null)	{TheFloorIsLava.log.info(ConsoleColor.YELLOW + "No location found for party: " + name + ConsoleColor.RESET); return false;}
 		
 		npc = (Villager) location.getWorld().spawnEntity(location, EntityType.VILLAGER);
 		npc.teleport(location);
@@ -65,6 +69,7 @@ public class CreateNPCGui {
 		npc.setAgeLock(true);
 		npc.setAI(false);
 		npc.setGravity(false);
+		return true;
 		
 	}
 	
