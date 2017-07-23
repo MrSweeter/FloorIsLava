@@ -25,12 +25,14 @@ public class TheFloorIsLava extends JavaPlugin	{
 	
 	public static Logger log = Logger.getLogger("Minecraft - TheFloorIsLava");
 	public static TheFloorIsLava instance;
+//	public static MultiverseCore mv;
 
 	private static ConfigurationCollection configs;
 	
 	public void onEnable()	{
 		
 		instance = this;
+//		mv = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
 		
 		configs = ConfigurationLoader.createFile(this);
 		

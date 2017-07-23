@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="C:/Users/utilisateur/Desktop/McS12/DEV/spigot-1.12.jar"/>
 	<classpathentry kind="lib" path="C:/Users/utilisateur/Desktop/McS12/DEV/spigot-api-1.12-R0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="C:/Users/utilisateur/Desktop/McS12/DEV/spigot-api-1.12-R0.1-SNAPSHOT-shaded.jar"/>
+	<classpathentry kind="lib" path="C:/Users/utilisateur/Desktop/FloorIsLava/plugins/Multiverse-Core-2.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

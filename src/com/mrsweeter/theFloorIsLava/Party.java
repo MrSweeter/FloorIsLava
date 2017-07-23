@@ -42,6 +42,26 @@ public class Party {
 	public static Party createParty(ConfigurationSection config)	{
 		
 		if (config != null)	{
+			
+//			if (TheFloorIsLava.mv != null)	{
+//				
+//				MVWorldManager manager = TheFloorIsLava.mv.getMVWorldManager();
+//				
+//				try {
+//					manager.addWorld(config.getString("world"), Environment.NORMAL, "sweetdream", WorldType.NORMAL, false, "");
+//					
+//				} catch (NullPointerException e) {
+//					TheFloorIsLava.log.info("Error when MV addWorld, nothing to save in config. don't worry the plugin works");
+//				} catch (IllegalArgumentException e)	{
+//					TheFloorIsLava.log.info("The world " + config.getString("world") + " is loaded");
+//				}
+//				MultiverseWorld mvW = manager.getMVWorld(config.getString("world"));
+//				mvW.setPVPMode(false);
+//				mvW.setGameMode(GameMode.ADVENTURE);
+//				mvW.allowPortalMaking(AllowedPortalType.NONE);
+//				mvW.setDifficulty(Difficulty.NORMAL);
+//			}
+			
 			World w = Bukkit.getWorld(config.getString("world"));
 			
 			double x = config.getDouble("game-manager.x"),
@@ -167,6 +187,7 @@ public class Party {
 				current.setData(floorNormal.get(b).getData().getData());
 			}
 			floorNormal.clear();
+			this.isEnable = false;
 		}
 	}
 	
@@ -473,6 +494,10 @@ public class Party {
 		if (task != null)	{
 			task.cancel();
 		}
+		
+		this.isStarted = true;
+		this.isEnable = true;
+		
 		this.disableLava();
 		this.playerParty = new HashMap<>();
 		this.playerReady = new HashMap<>();
