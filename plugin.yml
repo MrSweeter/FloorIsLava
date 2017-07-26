@@ -3,6 +3,7 @@ main: com.mrsweeter.theFloorIsLava.TheFloorIsLava
 version: 1.0.4
 author: MrSweeter
 description: Mini game
+softdepend: [Multiverse-Core]
 
 commands:
   flcreate:

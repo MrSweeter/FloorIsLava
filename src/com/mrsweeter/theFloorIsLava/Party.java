@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,6 +25,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.mrsweeter.theFloorIsLava.Listeners.InteractManager;
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import com.onarandombox.MultiverseCore.enums.AllowedPortalType;
 
 import Utils.ConsoleColor;
 import Utils.Messages;
@@ -43,24 +47,25 @@ public class Party {
 		
 		if (config != null)	{
 			
-//			if (TheFloorIsLava.mv != null)	{
-//				
-//				MVWorldManager manager = TheFloorIsLava.mv.getMVWorldManager();
-//				
-//				try {
-//					manager.addWorld(config.getString("world"), Environment.NORMAL, "sweetdream", WorldType.NORMAL, false, "");
-//					
-//				} catch (NullPointerException e) {
-//					TheFloorIsLava.log.info("Error when MV addWorld, nothing to save in config. don't worry the plugin works");
-//				} catch (IllegalArgumentException e)	{
-//					TheFloorIsLava.log.info("The world " + config.getString("world") + " is loaded");
-//				}
-//				MultiverseWorld mvW = manager.getMVWorld(config.getString("world"));
-//				mvW.setPVPMode(false);
-//				mvW.setGameMode(GameMode.ADVENTURE);
-//				mvW.allowPortalMaking(AllowedPortalType.NONE);
-//				mvW.setDifficulty(Difficulty.NORMAL);
-//			}
+			if (TheFloorIsLava.mv != null)	{
+				
+				MVWorldManager manager = TheFloorIsLava.mv.getMVWorldManager();
+				
+				try {
+					manager.loadWorld(config.getString("world"));
+				} catch (NullPointerException e) {
+					TheFloorIsLava.log.info("Error when MV addWorld, nothing to save in config. don't worry the plugin works");
+				} catch (IllegalArgumentException e)	{
+					TheFloorIsLava.log.info("The world " + config.getString("world") + " is loaded");
+				}
+				manager.loadWorld(config.getString("world"));
+				MultiverseWorld mvW = manager.getMVWorld(config.getString("world"));
+				mvW.setPVPMode(false);
+				mvW.setGameMode(GameMode.ADVENTURE);
+				mvW.allowPortalMaking(AllowedPortalType.NONE);
+				mvW.setDifficulty(Difficulty.NORMAL);
+				manager.saveWorldsConfig();
+			}
 			
 			World w = Bukkit.getWorld(config.getString("world"));
 			

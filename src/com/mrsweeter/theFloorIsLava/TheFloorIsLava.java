@@ -2,6 +2,7 @@ package com.mrsweeter.theFloorIsLava;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,6 +16,7 @@ import com.mrsweeter.theFloorIsLava.Listeners.JoinQuit;
 import com.mrsweeter.theFloorIsLava.Listeners.StopCommandInParty;
 import com.mrsweeter.theFloorIsLava.ObjectLoader.CommandsLoader;
 import com.mrsweeter.theFloorIsLava.ObjectLoader.ConfigurationLoader;
+import com.onarandombox.MultiverseCore.MultiverseCore;
 
 import Utils.ConfigurationCollection;
 import Utils.ConsoleColor;
@@ -25,14 +27,14 @@ public class TheFloorIsLava extends JavaPlugin	{
 	
 	public static Logger log = Logger.getLogger("Minecraft - TheFloorIsLava");
 	public static TheFloorIsLava instance;
-//	public static MultiverseCore mv;
+	public static MultiverseCore mv;
 
 	private static ConfigurationCollection configs;
 	
 	public void onEnable()	{
 		
 		instance = this;
-//		mv = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+		mv = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
 		
 		configs = ConfigurationLoader.createFile(this);
 		
