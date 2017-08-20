@@ -21,7 +21,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+//import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
@@ -272,8 +272,9 @@ public class CreateEditorSession implements Listener	{
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
-	public void cantPickupItem(PlayerPickupItemEvent e){
+	public void cantPickupItem(org.bukkit.event.player.PlayerPickupItemEvent e){
 		if(e.getPlayer().equals(this.p)){
 			e.setCancelled(true);
 		}

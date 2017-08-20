@@ -62,7 +62,7 @@ public class CreateNPCGui {
 		npc.teleport(location);
 		npc.setAdult();
 		npc.setCustomNameVisible(true);
-		npc.setProfession(Profession.NITWIT);
+		npc.setProfession(Profession.LIBRARIAN);
 		npc.setSilent(true);
 		npc.setInvulnerable(true);
 		npc.setCollidable(false);
